@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Métricas do Suporte N2 / Mês</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F2F8FD; --surface:#FFFFFF; --sky:#D9ECFA; --sky-2:#B9DCF5;
+  --blue:#2F86C9; --navy:#12324F; --ink:#24425E; --muted:#5E7891; --line:#D5E5F2;
+  --good:#1F8A63; --good-bg:#E3F5EC; --warn:#B26A00; --warn-bg:#FFF3DC; --alert:#C2410C; --alert-bg:#FDEBE1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1A26; --surface:#15263A; --sky:#1C3550; --sky-2:#285079;
+    --blue:#6CB6EE; --navy:#E6F2FC; --ink:#C9DCEC; --muted:#8FA9C0; --line:#24405C;
+    --good:#5ED3A1; --good-bg:#14352B; --warn:#F2B552; --warn-bg:#3A2D12; --alert:#F48A5B; --alert-bg:#3B2017;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1A26; --surface:#15263A; --sky:#1C3550; --sky-2:#285079;
+  --blue:#6CB6EE; --navy:#E6F2FC; --ink:#C9DCEC; --muted:#8FA9C0; --line:#24405C;
+  --good:#5ED3A1; --good-bg:#14352B; --warn:#F2B552; --warn-bg:#3A2D12; --alert:#F48A5B; --alert-bg:#3B2017;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1rem;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding:clamp(1.25rem,4vw,3rem) clamp(1rem,4vw,2.5rem) 3rem}
+h1,h2,h3,.num{font-family:"Outfit","Source Sans 3",system-ui,sans-serif;color:var(--navy);margin:0}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1rem;padding-bottom:1.5rem;border-bottom:2px solid var(--sky-2)}
+h1{font-weight:500;font-size:clamp(1.6rem,3.6vw,2.4rem);letter-spacing:-.01em}
+.sub{color:var(--muted);margin:.25rem 0 0}
+.period{background:var(--sky);color:var(--navy);padding:.45rem .9rem;border-radius:999px;font-weight:600;font-size:.92rem}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(1.25rem,3vw,2.5rem);margin-top:2rem;align-items:stretch}
+.hero-main{background:linear-gradient(160deg,var(--sky) 0%,var(--surface) 75%);border:1px solid var(--line);border-radius:20px;padding:clamp(1.5rem,3.5vw,2.5rem);display:flex;flex-direction:column;justify-content:space-between}
+.hero-main .label{color:var(--muted);font-weight:600}
+.hero-main .num{font-size:clamp(5rem,14vw,9rem);font-weight:700;line-height:.95;color:var(--blue);letter-spacing:-.03em;margin:.6rem 0 .4rem}
+.hero-main p{margin:0;max-width:38ch}
+.hero-main small{display:block;margin-top:1.2rem;color:var(--muted);font-size:.85rem}
+
+.trend{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(1.25rem,3vw,2rem)}
+.trend h2{font-size:1.15rem;font-weight:500}
+.trend .hint{color:var(--muted);font-size:.9rem;margin:.2rem 0 1.25rem}
+.bars{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;align-items:end;height:200px}
+.bar{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar .v{font-family:"Outfit",sans-serif;font-weight:500;color:var(--navy);margin-bottom:.35rem}
+.bar .col{width:100%;max-width:84px;border-radius:10px 10px 4px 4px;background:var(--sky-2)}
+.bar.on .col{background:var(--blue)}
+.bar.on .v{color:var(--blue);font-weight:700}
+.bar .m{margin-top:.5rem;color:var(--muted);font-size:.9rem}
+.qtotal{margin-top:1.25rem;padding-top:1rem;border-top:1px dashed var(--line);display:flex;justify-content:space-between;color:var(--muted)}
+.qtotal strong{color:var(--navy);font-family:"Outfit",sans-serif}
+
+/* Q3 highlights */
+.section-title{margin:3rem 0 .35rem;font-size:1.35rem;font-weight:500}
+.section-lead{margin:0 0 1.25rem;color:var(--muted)}
+.highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+.hl{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:6px 16px 16px 6px;padding:1.4rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.6rem}
+.hl.good{--c:var(--good);--cb:var(--good-bg)}
+.hl.warn{--c:var(--warn);--cb:var(--warn-bg)}
+.hl.alert{--c:var(--alert);--cb:var(--alert-bg)}
+.hl h3{font-size:1rem;font-weight:500;color:var(--ink)}
+.hl .num{font-size:clamp(2.2rem,4.5vw,2.9rem);font-weight:700;color:var(--navy);line-height:1}
+.hl .num span{font-size:.45em;font-weight:500;color:var(--muted);margin-left:.2rem}
+.hl p{margin:0;color:var(--muted);font-size:.95rem}
+.tag{align-self:flex-start;background:var(--cb);color:var(--c);font-weight:600;font-size:.88rem;padding:.3rem .75rem;border-radius:999px}
+.meter{height:10px;background:var(--sky);border-radius:999px;overflow:hidden;position:relative}
+.meter i{display:block;height:100%;width:95.83%;background:var(--good);border-radius:999px}
+
+/* August composition */
+.split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.4rem}
+.panel h3{font-size:1.02rem;font-weight:500;margin-bottom:1rem}
+.row{display:grid;grid-template-columns:minmax(0,9.5rem) 1fr 2.5rem;gap:.75rem;align-items:center;margin:.55rem 0;font-size:.95rem}
+.row .track{height:12px;background:var(--sky);border-radius:999px;overflow:hidden}
+.row .track i{display:block;height:100%;background:var(--blue);border-radius:999px}
+.row b{font-family:"Outfit",sans-serif;font-weight:500;color:var(--navy);text-align:right}
+.note{color:var(--muted);font-size:.85rem;margin:.9rem 0 0}
+
+footer{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+
+@media (max-width:860px){
+  .hero,.split{grid-template-columns:1fr}
+  .highlights{grid-template-columns:1fr}
+}
+@media (max-width:420px){
+  .row{grid-template-columns:minmax(0,7rem) 1fr 2.2rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Métricas do Suporte N2 / Mês</h1>
+    <p class="sub">Relatório Indicadores</p>
+  </div>
+  <span class="period">Setembro de 2026</span>
+</header>
+
+<section class="hero" aria-label="Volume de chamados">
+  <div class="hero-main">
+    <div>
+      <div class="label">Chamados abertos em setembro/2026</div>
+      <div class="num">135</div>
+      <p>Chamados enviados ao Suporte N2 entre 01/09 e 30/09/2026, cerca de 6,4 por dia útil (descontado o feriado de 7/9).</p>
+    </div>
+    <small>Fonte: planilha Suporte N2, aba "Tarefas", campo "Criado em".</small>
+  </div>
+
+  <div class="trend">
+    <h2>Volume mensal no Quarter 3</h2>
+    <p class="hint">Setembro em destaque</p>
+    <div class="bars" role="img" aria-label="Julho 163, agosto 160, setembro 135 chamados">
+      <div class="bar"><span class="v">163</span><span class="col" style="height:88%"></span><span class="m">Jul</span></div>
+      <div class="bar"><span class="v">160</span><span class="col" style="height:86%"></span><span class="m">Ago</span></div>
+      <div class="bar on"><span class="v">135</span><span class="col" style="height:73%"></span><span class="m">Set</span></div>
+    </div>
+    <div class="qtotal"><span>Total do Quarter 3</span><strong>458 chamados</strong></div>
+  </div>
+</section>
+
+<h2 class="section-title">Destaques do Quarter 3</h2>
+<p class="section-lead">Indicadores de nível de serviço consolidados para julho, agosto e setembro.</p>
+
+<section class="highlights">
+  <article class="hl warn">
+    <h3>Alcance da meta de SLO de 50%</h3>
+    <div class="num">95,83<span>%</span></div>
+    <div class="meter" aria-hidden="true"><i></i></div>
+    <span class="tag">Bom, mas atenção</span>
+    <p>Resultado positivo, porém abaixo de 100%: alguns chamados ficaram fora da meta e merecem acompanhamento.</p>
+  </article>
+
+  <article class="hl good">
+    <h3>Média de primeiro atendimento</h3>
+    <div class="num">01:38:26</div>
+    <span class="tag">Muito bom</span>
+    <p>Tempo médio aproximado até a primeira resposta ao cliente no trimestre.</p>
+  </article>
+
+  <article class="hl alert">
+    <h3>Pedidos de prorrogação</h3>
+    <div class="num">10<span>pedidos</span></div>
+    <span class="tag">Ponto de atenção</span>
+    <p>Prorrogações impactam a percepção de prazo do cliente; vale entender as causas recorrentes.</p>
+  </article>
+</section>
+
+<h2 class="section-title">Composição dos chamados de setembro</h2>
+<p class="section-lead">Os 135 chamados de setembro, por situação e por etapa no quadro.</p>
+
+<section class="split">
+  <div class="panel">
+    <h3>Status atual</h3>
+    <div class="row"><span>Não iniciado</span><span class="track"><i style="width:84.4%"></i></span><b>114</b></div>
+    <div class="row"><span>Em andamento</span><span class="track"><i style="width:11.9%"></i></span><b>16</b></div>
+    <div class="row"><span>Concluída</span><span class="track"><i style="width:3.7%"></i></span><b>5</b></div>
+    <p class="note">Posição na data da exportação (09/10/2026).</p>
+  </div>
+  <div class="panel">
+    <h3>Etapa no quadro</h3>
+    <div class="row"><span>Aceite / Cancel. / N3</span><span class="track"><i style="width:78.5%"></i></span><b>106</b></div>
+    <div class="row"><span>Review semanal</span><span class="track"><i style="width:8.1%"></i></span><b>11</b></div>
+    <div class="row"><span>Ag. cliente / Prorrog.</span><span class="track"><i style="width:8.1%"></i></span><b>11</b></div>
+    <div class="row"><span>Finalizado</span><span class="track"><i style="width:3.7%"></i></span><b>5</b></div>
+    <div class="row"><span>Em andamento</span><span class="track"><i style="width:1.5%"></i></span><b>2</b></div>
+    <p class="note">Classificação pelos buckets do plano.</p>
+  </div>
+</section>
+
+<footer>
+  Relatório Suporte N2 · dados exportados em 09/10/2026. Indicadores de SLO, primeiro atendimento e prorrogações informados pela gestão do time.
+</footer>
+
+</div>
+</body>
+</html>
