@@ -95,6 +95,18 @@ h1{color:var(--text);font-weight:800;font-size:clamp(2rem,6vw,3.3rem);line-heigh
 .stat .num{font-size:clamp(3rem,8vw,4.2rem);font-weight:800;line-height:1;color:var(--c)}
 .stat h3{margin:0}
 .stat p{margin:0;max-width:42ch;font-size:.93rem}
+/* Ritmo do mês */
+.chip{display:inline-block;margin-left:.35rem;vertical-align:middle;font-size:.75rem;font-weight:600;padding:.15rem .6rem;border-radius:999px;background:rgba(248,197,49,.15);color:var(--yellow)}
+.pace{display:flex;flex-direction:column;gap:1rem}
+.pace .big2{text-align:center}
+.pace .big2 .n{display:block;font-size:clamp(3rem,8vw,4rem);font-weight:800;line-height:1;color:var(--green)}
+.pace .big2 .d{font-size:.92rem}
+.prog{height:12px;background:var(--card-2);border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--blue);border-radius:999px}
+.pace .row2{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--soft);margin-top:.45rem}
+.pace .row2 b{color:var(--text)}
+.pace .alt{background:var(--card-2);border-radius:10px;padding:.8rem 1rem;text-align:center;font-size:.9rem}
+.pace .alt b{color:var(--text);font-size:1.15rem}
 /* Pie */
 .pie-wrap{display:flex;flex-direction:column;align-items:center;gap:1.2rem}
 .pie{width:170px;height:170px;border-radius:50%;
@@ -152,6 +164,7 @@ footer{margin-top:1.8rem;text-align:center;font-size:.84rem;color:var(--muted)}
 
 <nav class="tabs" role="tablist" aria-label="Mês de referência">
   <button class="tab" role="tab" id="tab-set" aria-controls="painel-set" aria-selected="true" data-periodo="setembro de 2026">Setembro</button>
+  <button class="tab" role="tab" id="tab-out" aria-controls="painel-out" aria-selected="false" tabindex="-1" data-periodo="outubro de 2026 (parcial)">Outubro</button>
   <button class="tab" role="tab" id="tab-nov" aria-controls="painel-nov" aria-selected="false" tabindex="-1" data-periodo="novembro de 2026"><span class="dot" aria-hidden="true"></span>Novembro</button>
 </nav>
 
@@ -231,6 +244,87 @@ footer{margin-top:1.8rem;text-align:center;font-size:.84rem;color:var(--muted)}
 
 <footer>
   Relatório Suporte N2 · dados exportados em 09/10/2026. Indicadores de SLO, primeiro atendimento e prorrogações informados pela gestão do time.
+</footer>
+</div>
+
+<div role="tabpanel" id="painel-out" aria-labelledby="tab-out" hidden>
+<div class="cols" style="margin-top:1.25rem">
+  <section class="col">
+    <h2>Volume de Chamados</h2>
+
+    <div class="card big">
+      <h3>Chamados abertos em outubro/2026 <span class="chip">Parcial</span></h3>
+      <div class="num">60</div>
+      <div class="mix" role="img" aria-label="Licenciadas N1 43, IPREV e PGMMAN 12, PGMbox 5"><span style="flex:43;background:var(--blue)"></span><span style="flex:12;background:var(--yellow)"></span><span style="flex:5;background:var(--green)"></span></div>
+      <ul class="mixl">
+        <li><i style="background:var(--blue)"></i>Licenciadas [N1] <b>43</b></li>
+        <li><i style="background:var(--yellow)"></i>IPREV e PGMMAN <b>12</b></li>
+        <li><i style="background:var(--green)"></i>PGMbox <b>5</b></li>
+      </ul>
+      <p>Chamados enviados ao Suporte N2 entre 01/10 e 19/10/2026, cerca de 5,0 por dia útil até hoje (12 de 21 dias úteis, descontado o feriado de 12/10).</p>
+    </div>
+
+    <div class="card">
+      <h3>Quantitativo de Chamados</h3>
+      <div class="qgrid">
+        <div class="qt" style="--c:var(--blue)"><span class="n">34</span><span class="d"><b>Licenciadas</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--sky)"><span class="n">9</span><span class="d"><b>Licenciadas</b> sem SLA</span></div>
+        <div class="qt" style="--c:var(--yellow)"><span class="n">10</span><span class="d"><b>IPREV e PGMMAN</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--yellow)"><span class="n">2</span><span class="d"><b>IPREV e PGMMAN</b> sem SLA</span></div>
+        <div class="qt" style="--c:var(--green)"><span class="n">3</span><span class="d"><b>PGMbox</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--green)"><span class="n">2</span><span class="d"><b>PGMbox</b> sem SLA</span></div>
+      </div>
+      <p class="vtotal">Total: <b>47 com SLA</b> · <b>13 sem SLA</b></p>
+    </div>
+  </section>
+</div>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col">
+    <h2>Qualidade do Atendimento</h2>
+
+    <div class="card stat" style="--c:var(--green)">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-7 18-16 22C15 40 8 32 8 22V10z" fill="var(--green)"/><path d="m17 24 5 5 9-10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="num">—</div>
+      <h3>Perdas de SLA no mês</h3>
+      <p>Aguardando dados de outubro.</p>
+    </div>
+
+    <div class="card stat" style="--c:var(--sky)">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="8" width="38" height="28" rx="4" fill="var(--blue)"/><rect x="18" y="38" width="12" height="4" rx="2" fill="var(--sky)"/><path d="m14 24 5-5-5-5M23 28h11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="num">—</div>
+      <h3>Defeitos simulados</h3>
+      <p>Aguardando dados de outubro.</p>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <h3>Destaques</h3>
+  <div class="items">
+    <div class="item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--card-2)" stroke-width="6"/><circle cx="24" cy="24" r="19" fill="none" stroke="var(--green)" stroke-width="6" stroke-dasharray="119.4 119.4" transform="rotate(-90 24 24)" stroke-linecap="round"/><circle cx="24" cy="24" r="6" fill="var(--yellow)"/></svg>
+      <span class="k">100%</span>
+      <span class="l">Alcance da meta da SLO de 50% no Quarter 4</span>
+      <span class="tag good">Meta 100% alcançada</span>
+    </div>
+    <div class="item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="25" r="18" fill="var(--blue)"/><rect x="20" y="3" width="8" height="5" rx="1.5" fill="var(--sky)"/><path d="M24 14v11l7 5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="k">02:10:24</span>
+      <span class="l">Média de primeiro atendimento no Quarter 4</span>
+      <span class="tag warn">Acima do Q3 (01:38:26)</span>
+    </div>
+    <div class="item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--purple)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <span class="k">2</span>
+      <span class="l">Pedidos de prorrogação em outubro/2026</span>
+      <span class="tag good">Menos que em setembro (10)</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Relatório Suporte N2 · dados parciais de outubro, até 19/10/2026. Indicadores de SLO, primeiro atendimento e prorrogações informados pela gestão do time.
 </footer>
 </div>
 
