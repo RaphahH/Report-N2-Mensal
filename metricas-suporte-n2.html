@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#232527">
+<title>Métricas do Suporte N2 / Mês</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Paleta 1: #45FFD4 · #6DEAF6 · #5C76E7 · #303C6A · #232527 */
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+  --bg:#232527; --card:#2C2F33; --card-2:#353A42; --line:#3D424B;
+  --text:#FFFFFF; --soft:#C8CDD6; --muted:#8B929E;
+  --green:#45FFD4;   /* menta   */
+  --sky:#6DEAF6;     /* ciano   */
+  --blue:#5C76E7;    /* azul    */
+  --navy:#303C6A;    /* marinho */
+  --purple:#8B9CF4;  /* tom claro do azul, legível sobre o fundo escuro */
+  --yellow:#F8C531; --orange:#F2894B;   /* só para status de atenção/alerta */
+}
+:root[data-theme="dark"],:root[data-theme="light"]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--soft);font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;overflow-wrap:anywhere}
+img,svg{max-width:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:clamp(1.25rem,4vw,3rem) max(clamp(.85rem,3vw,2rem),env(safe-area-inset-right,0px)) clamp(2rem,5vw,3rem) max(clamp(.85rem,3vw,2rem),env(safe-area-inset-left,0px))}
+
+/* Header */
+header{position:relative;overflow:hidden;text-align:center;border-radius:16px;padding:clamp(1.6rem,5vw,3rem) clamp(1rem,4vw,2.5rem);
+  background:linear-gradient(120deg,var(--navy) 0%,#3E4F96 50%,var(--blue) 100%);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+header::before,header::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+header::before{width:280px;height:280px;right:-90px;top:-120px;background:rgba(109,234,246,.14)}
+header::after{width:180px;height:180px;left:-60px;bottom:-90px;background:rgba(69,255,212,.20)}
+header>*{position:relative;z-index:1}
+header h1{margin:.8rem 0 .7rem;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+.brand{display:inline-flex;align-items:center;gap:.5rem;color:var(--text);font-weight:600;font-size:.95rem;background:rgba(255,255,255,.12);padding:.35rem .9rem .35rem .4rem;border-radius:999px}
+.brand .logo{width:30px;height:30px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-height:1.1;margin:.9rem 0 1rem;letter-spacing:-.01em}
+.intro{margin:0;font-size:clamp(.92rem,2.4vw,1rem);color:var(--soft)}
+.intro strong{display:block;color:#E3FFF8;font-weight:500;margin-top:.15rem}
+
+/* Abas */
+.tabs{display:flex;justify-content:center;gap:.5rem;margin:1.6rem auto 0;flex-wrap:wrap}
+.tab{font:inherit;font-weight:600;font-size:.95rem;color:var(--soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.55rem 1.3rem;min-height:44px;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;transition:background .15s,color .15s}
+.tab:hover{color:var(--text);border-color:var(--blue)}
+.tab[aria-selected="true"]{background:var(--green);border-color:var(--green);color:var(--bg)}
+.tab .dot{width:8px;height:8px;border-radius:50%;background:var(--sky)}
+.tab[aria-selected="true"] .dot{background:var(--bg)}
+.tab:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+[role="tabpanel"][hidden]{display:none}
+
+/* Em construção */
+.building{margin-top:2.5rem;background:var(--card);border-radius:16px;padding:clamp(2rem,6vw,3.5rem) 1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  background-image:repeating-linear-gradient(-45deg,transparent 0 22px,rgba(69,255,212,.035) 22px 44px)}
+.building svg{width:clamp(110px,22vw,150px);height:auto}
+.building h2{color:var(--text);font-weight:700;font-size:clamp(1.4rem,3.5vw,1.9rem);margin:.4rem 0 0}
+.building .badge{background:rgba(69,255,212,.14);color:var(--green);font-weight:600;font-size:.9rem;padding:.3rem .9rem;border-radius:999px}
+.building p{margin:0;max-width:44ch}
+
+/* Grid */
+.cols{margin-top:2.5rem}
+.col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.col h2{grid-column:1/-1;color:var(--text);text-align:center;font-weight:600;font-size:clamp(1.2rem,2.6vw,1.5rem);margin:0 0 .1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:clamp(1rem,3vw,1.3rem) clamp(1rem,3vw,1.3rem) clamp(1.1rem,3vw,1.4rem);min-width:0}
+.card h3{color:var(--text);text-align:center;font-weight:600;font-size:1.05rem;margin:0 0 1.1rem;line-height:1.3}
+
+/* Número principal */
+.big{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.4rem;min-height:190px}
+.big .num{font-size:clamp(3.8rem,13vw,6.5rem);font-weight:800;color:var(--green);line-height:.95;letter-spacing:-.02em}
+.big p{margin:0;max-width:34ch;font-size:.95rem}
+.mix{display:flex;width:100%;max-width:300px;height:10px;border-radius:999px;overflow:hidden;gap:2px;margin:.5rem auto .1rem}
+.mixl{list-style:none;margin:.2rem 0 .5rem;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1rem;font-size:.88rem;color:var(--text)}
+.mixl li{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap}
+.mixl i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.mixl b{color:var(--soft);font-weight:600}
+.vtotal{margin:1rem 0 0;text-align:center;font-size:.92rem}
+.vtotal b{color:var(--text)}
+
+/* Quantitativo */
+.qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+.qt{background:var(--card-2);border-radius:10px;border-top:4px solid var(--c);padding:1rem .9rem 1.05rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.2rem;min-width:0}
+.qt.soft{border-top-style:dashed;background:rgba(48,60,106,.45)}
+.qt .n{font-size:clamp(1.9rem,5vw,2.6rem);font-weight:700;line-height:1;color:var(--c)}
+.qt .d{font-size:.9rem;color:var(--soft)}
+.qt .d b{color:var(--text);font-weight:600}
+
+/* Indicadores */
+.stat{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.4rem}
+.stat svg{width:44px;height:44px;margin-bottom:.2rem}
+.stat .face{font-size:2.9rem;line-height:1;margin-bottom:.1rem;cursor:default;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.stat .num{font-size:clamp(2.8rem,8vw,4.2rem);font-weight:800;line-height:1;color:var(--c)}
+.stat h3{margin:0}
+.stat p{margin:0;max-width:42ch;font-size:.93rem}
+.chip{display:inline-block;margin-left:.35rem;vertical-align:middle;font-size:.75rem;font-weight:600;padding:.15rem .6rem;border-radius:999px;background:rgba(109,234,246,.14);color:var(--sky)}
+
+/* Destaques */
+.item{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.45rem}
+.item svg{width:46px;height:46px}
+.item .k{color:var(--text);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;line-height:1.1}
+.item .l{color:var(--soft);font-size:.92rem;max-width:22ch}
+.tag{font-size:.8rem;font-weight:600;padding:.25rem .7rem;border-radius:999px;margin-top:.15rem}
+.tag.good{background:rgba(69,255,212,.14);color:var(--green)}
+.tag.warn{background:rgba(248,197,49,.15);color:var(--yellow)}
+.tag.alert{background:rgba(242,137,75,.16);color:var(--orange)}
+
+.col.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* Responsivo */
+@media (max-width:900px){
+  .col.tres{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .col.tres>.card:last-child{grid-column:1/-1}
+}
+@media (max-width:760px){
+  .col,.col.tres{grid-template-columns:1fr}
+  .col.tres>.card:last-child{grid-column:auto}
+  .item .l{max-width:32ch}
+  .big{min-height:0}
+}
+@media (max-width:420px){
+  .tabs{gap:.4rem}
+  .tab{padding:.5rem 1rem;font-size:.9rem}
+  .qgrid{gap:.55rem}
+  .qt{padding:.85rem .6rem .9rem}
+  .mixl li{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#232527" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/></svg>
+    </span>
+    Suporte N2
+  </div>
+  <h1>Métricas do Suporte N2 / Mês</h1>
+  <p class="intro"><strong id="periodo">Período de referência: setembro de 2026.</strong></p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Mês de referência">
+  <button class="tab" role="tab" id="tab-2026-09" aria-controls="painel-2026-09" aria-selected="true" data-periodo="setembro de 2026">Setembro</button>
+  <button class="tab" role="tab" id="tab-2026-10" aria-controls="painel-2026-10" aria-selected="false" tabindex="-1" data-periodo="outubro de 2026 (parcial)">Outubro</button>
+  <button class="tab" role="tab" id="tab-2026-11" aria-controls="painel-2026-11" aria-selected="false" tabindex="-1" data-periodo="novembro de 2026"><span class="dot" aria-hidden="true"></span>Novembro</button>
+</nav>
+
+<div role="tabpanel" id="painel-2026-09" aria-labelledby="tab-2026-09">
+<div class="cols" style="margin-top:1.25rem">
+  <section class="col">
+    <h2>Volume de Chamados</h2>
+
+    <div class="card big">
+      <h3>Chamados abertos em setembro/2026</h3>
+      <div class="num">128</div>
+      <div class="mix" role="img" aria-label="Licenciadas N1 94, IPREV e PGMMAN 22, PGMbox 12"><span style="flex:94;background:var(--blue)"></span><span style="flex:22;background:var(--sky)"></span><span style="flex:12;background:var(--green)"></span></div>
+      <ul class="mixl">
+        <li><i style="background:var(--blue)"></i>Licenciadas [N1] <b>94</b></li>
+        <li><i style="background:var(--sky)"></i>IPREV e PGMMAN <b>22</b></li>
+        <li><i style="background:var(--green)"></i>PGMbox <b>12</b></li>
+      </ul>
+      <p>Chamados enviados ao Suporte N2 entre 01/09 e 30/09/2026, cerca de 6,1 por dia útil (descontado o feriado de 7/9).</p>
+    </div>
+
+    <div class="card">
+      <h3>Quantitativo de Chamados</h3>
+      <div class="qgrid">
+        <div class="qt" style="--c:var(--blue)"><span class="n">79</span><span class="d"><b>Licenciadas</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--blue)"><span class="n">15</span><span class="d"><b>Licenciadas</b> sem SLA</span></div>
+        <div class="qt" style="--c:var(--green)"><span class="n">12</span><span class="d"><b>PGMbox</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--green)"><span class="n">0</span><span class="d"><b>PGMbox</b> sem SLA</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col">
+    <h2>Qualidade do Atendimento</h2>
+
+    <div class="card stat" style="--c:var(--green);grid-column:1/-1">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-7 18-16 22C15 40 8 32 8 22V10z" fill="var(--green)"/><path d="m17 24 5 5 9-10" fill="none" stroke="var(--bg)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="num">0</div>
+      <h3>Perdas de SLA no mês</h3>
+      <p>Nenhum prazo de atendimento perdido em setembro.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col tres">
+    <h2>Escalonamentos</h2>
+
+    <div class="card stat" style="--c:var(--purple)">
+      <span class="face" role="img" aria-label="Escalonamentos ao N3: ótimo (abaixo de 40)" title="Escalonamentos ao N3: ótimo (abaixo de 40)">😄</span>
+      <div class="num">31</div>
+      <h3>Escalonamentos ao N3</h3>
+    </div>
+
+    <div class="card stat" style="--c:var(--sky)">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M19 6h10M21 6v13L10 38a4 4 0 0 0 3.5 6h21a4 4 0 0 0 3.5-6L27 19V6" fill="var(--sky)" stroke="var(--sky)" stroke-width="2" stroke-linejoin="round"/><path d="M14.5 32h19l3.8 7a2 2 0 0 1-1.8 3h-23a2 2 0 0 1-1.8-3z" fill="var(--blue)"/><circle cx="22" cy="36" r="2" fill="#fff"/><circle cx="28" cy="38" r="1.5" fill="#fff"/></svg>
+      <div class="num">—</div>
+      <h3>Escalonamentos SIMULÁVEIS ao N3</h3>
+      <p>Aguardando dados de setembro.</p>
+    </div>
+
+    <div class="card stat" style="--c:var(--green)">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="14" cy="34" r="8" fill="var(--blue)"/><circle cx="34" cy="14" r="8" fill="var(--navy)"/><path d="M20 28 28 20m-6 0h6v6" fill="none" stroke="var(--green)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="m11 34 2 2 4-4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 11l6 6m0-6-6 6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <div class="num">22</div>
+      <h3>Demandas escalonadas e simuladas</h3>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col tres">
+    <h2>Destaques</h2>
+
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--navy)" stroke-width="6"/><circle cx="24" cy="24" r="19" fill="none" stroke="var(--green)" stroke-width="6" stroke-dasharray="114.4 119.4" transform="rotate(-90 24 24)" stroke-linecap="round"/><circle cx="24" cy="24" r="6" fill="var(--sky)"/></svg>
+      <span class="k">95,83%</span>
+      <span class="l">Alcance da meta da SLO de 50% no Quarter 3</span>
+      <span class="tag warn">Bom, mas atenção</span>
+    </div>
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="25" r="18" fill="var(--blue)"/><rect x="20" y="3" width="8" height="5" rx="1.5" fill="var(--sky)"/><path d="M24 14v11l7 5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="k">01:38:26</span>
+      <span class="l">Média de primeiro atendimento no Quarter 3</span>
+      <span class="tag good">Muito bom</span>
+    </div>
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <span class="k">10</span>
+      <span class="l">Pedidos de prorrogação em setembro/2026</span>
+      <span class="tag alert">Ponto de atenção</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<div role="tabpanel" id="painel-2026-10" aria-labelledby="tab-2026-10" hidden>
+<div class="cols" style="margin-top:1.25rem">
+  <section class="col">
+    <h2>Volume de Chamados</h2>
+
+    <div class="card big">
+      <h3>Chamados abertos em outubro/2026 <span class="chip">Parcial</span></h3>
+      <div class="num">87</div>
+      <div class="mix" role="img" aria-label="Licenciadas N1 63, IPREV e PGMMAN 18, PGMbox 6"><span style="flex:63;background:var(--blue)"></span><span style="flex:18;background:var(--sky)"></span><span style="flex:6;background:var(--green)"></span></div>
+      <ul class="mixl">
+        <li><i style="background:var(--blue)"></i>Licenciadas [N1] <b>63</b></li>
+        <li><i style="background:var(--sky)"></i>IPREV e PGMMAN <b>18</b></li>
+        <li><i style="background:var(--green)"></i>PGMbox <b>6</b></li>
+      </ul>
+      <p>Chamados enviados ao Suporte N2 entre 01/10 e 19/10/2026, cerca de 7,2 por dia útil até hoje (12 de 21 dias úteis, descontado o feriado de 12/10).</p>
+    </div>
+
+    <div class="card">
+      <h3>Quantitativo de Chamados</h3>
+      <div class="qgrid">
+        <div class="qt" style="--c:var(--blue)"><span class="n">51</span><span class="d"><b>Licenciadas</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--blue)"><span class="n">12</span><span class="d"><b>Licenciadas</b> sem SLA</span></div>
+        <div class="qt" style="--c:var(--sky)"><span class="n">15</span><span class="d"><b>IPREV e PGMMAN</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--sky)"><span class="n">3</span><span class="d"><b>IPREV e PGMMAN</b> sem SLA</span></div>
+        <div class="qt" style="--c:var(--green)"><span class="n">4</span><span class="d"><b>PGMbox</b> com SLA</span></div>
+        <div class="qt soft" style="--c:var(--green)"><span class="n">2</span><span class="d"><b>PGMbox</b> sem SLA</span></div>
+      </div>
+      <p class="vtotal">Total: <b>70 com SLA</b> · <b>17 sem SLA</b></p>
+    </div>
+  </section>
+</div>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col">
+    <h2>Qualidade do Atendimento</h2>
+
+    <div class="card stat" style="--c:var(--green);grid-column:1/-1">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v12c0 10-7 18-16 22C15 40 8 32 8 22V10z" fill="var(--green)"/><path d="m17 24 5 5 9-10" fill="none" stroke="var(--bg)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="num">0</div>
+      <h3>Perdas de SLA no mês</h3>
+      <p>Nenhum prazo de atendimento perdido em setembro.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col tres">
+    <h2>Escalonamentos</h2>
+
+    <div class="card stat" style="--c:var(--purple)">
+      <span class="face" role="img" aria-label="Escalonamentos ao N3: ótimo (abaixo de 40)" title="Escalonamentos ao N3: ótimo (abaixo de 40)">😄</span>
+      <div class="num">16</div>
+      <h3>Escalonamentos ao N3</h3>
+    </div>
+
+    <div class="card stat" style="--c:var(--sky)">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M19 6h10M21 6v13L10 38a4 4 0 0 0 3.5 6h21a4 4 0 0 0 3.5-6L27 19V6" fill="var(--sky)" stroke="var(--sky)" stroke-width="2" stroke-linejoin="round"/><path d="M14.5 32h19l3.8 7a2 2 0 0 1-1.8 3h-23a2 2 0 0 1-1.8-3z" fill="var(--blue)"/><circle cx="22" cy="36" r="2" fill="#fff"/><circle cx="28" cy="38" r="1.5" fill="#fff"/></svg>
+      <div class="num">10</div>
+      <h3>Escalonamentos SIMULÁVEIS ao N3</h3>
+    </div>
+
+    <div class="card stat" style="--c:var(--green)">
+      <span class="face" role="img" aria-label="Simuladas: bom (50% a 74%)" title="Simuladas: bom (50% a 74%)">🙂</span>
+      <div class="num">6</div>
+      <h3>Demandas escalonadas e simuladas</h3>
+      <p>60% dos escalonamentos simuláveis foram simulados.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col tres">
+    <h2>Destaques</h2>
+
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--navy)" stroke-width="6"/><circle cx="24" cy="24" r="19" fill="none" stroke="var(--green)" stroke-width="6" stroke-dasharray="119.4 119.4" transform="rotate(-90 24 24)" stroke-linecap="round"/><circle cx="24" cy="24" r="6" fill="var(--sky)"/></svg>
+      <span class="k">100%</span>
+      <span class="l">Alcance da meta da SLO de 50% no Quarter 4</span>
+      <span class="tag good">Meta 100% alcançada</span>
+    </div>
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="25" r="18" fill="var(--blue)"/><rect x="20" y="3" width="8" height="5" rx="1.5" fill="var(--sky)"/><path d="M24 14v11l7 5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="k">02:10:24</span>
+      <span class="l">Média de primeiro atendimento no Quarter 4</span>
+      <span class="tag good">Acima do Q3 (01:38:26)</span>
+    </div>
+    <div class="card item">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <span class="k">2</span>
+      <span class="l">Pedidos de prorrogação em outubro/2026</span>
+      <span class="tag good">Menos que em setembro (10)</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<div role="tabpanel" id="painel-2026-11" aria-labelledby="tab-2026-11" hidden>
+  <section class="building">
+    <svg viewBox="0 0 160 140" aria-hidden="true">
+      <rect x="18" y="124" width="124" height="10" rx="5" fill="var(--navy)"/>
+      <path d="M62 30h36l22 94H40z" fill="var(--blue)"/>
+      <path d="M56 56h48l5 22H51zM46 96h68l5 22H41z" fill="#fff" opacity=".92"/>
+      <rect x="58" y="22" width="44" height="10" rx="4" fill="var(--green)"/>
+      <rect x="30" y="118" width="100" height="10" rx="3" fill="var(--green)"/>
+      <g transform="translate(112 26)"><circle r="16" fill="var(--sky)"/><path d="M-7 7 5-5M2-9a6 6 0 0 0 7 7l-4 4" fill="none" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+    </svg>
+    <span class="badge">Em construção</span>
+    <h2>Resultados de novembro/2026</h2>
+    <p>Esta página está em construção. Os indicadores de novembro serão adicionados aqui assim que estiverem consolidados.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  var periodo=document.getElementById('periodo');
+  function ativar(t){
+    tabs.forEach(function(x){
+      var on=x===t;
+      x.setAttribute('aria-selected',on);
+      x.tabIndex=on?0:-1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden=!on;
+    });
+    periodo.textContent='Período de referência: '+t.dataset.periodo+'.';
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){ativar(t)});
+    t.addEventListener('keydown',function(e){
+      var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;
+      if(d){var n=tabs[(i+d+tabs.length)%tabs.length];n.focus();ativar(n);}
+    });
+  });
+})();
+</script>
+
+</div>
+</body>
+</html>
