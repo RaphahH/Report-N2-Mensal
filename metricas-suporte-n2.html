@@ -22,6 +22,7 @@
   --blue:#5C76E7;    /* azul    */
   --navy:#303C6A;    /* marinho */
   --purple:#8B9CF4;  /* tom claro do azul, legível sobre o fundo escuro */
+  --ice:#D7DEEC;     /* gelo, 5ª cor das origens de prorrogação */
   --yellow:#F8C531; --orange:#F2894B;   /* só para status de atenção/alerta */
 }
 :root[data-theme="dark"],:root[data-theme="light"]{color-scheme:dark}
@@ -109,6 +110,21 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
 .tag.warn{background:rgba(248,197,49,.15);color:var(--yellow)}
 .tag.alert{background:rgba(242,137,75,.16);color:var(--orange)}
 
+/* Pedidos de prorrogação */
+.big>svg{width:44px;height:44px;margin-bottom:.1rem}
+.prorrog .num{color:var(--sky)}
+.prorrog h3{margin:0 0 .2rem}
+.origem{display:flex;flex-direction:column;justify-content:center}
+.orig{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:max-content minmax(0,1fr) auto;gap:1.1rem .8rem;align-items:center;font-size:.92rem}
+.orig li{display:contents}
+.orig .o-nome{color:var(--text);font-weight:600;white-space:nowrap;overflow-wrap:normal;display:inline-flex;align-items:center;gap:.45rem}
+.orig .o-nome::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.orig .o-barra{height:12px;background:var(--card-2);border-radius:999px;overflow:hidden}
+.orig .o-barra i{display:block;height:100%;background:var(--c);border-radius:999px}
+.orig .o-n{color:var(--c);font-weight:700;font-size:1.25rem;line-height:1.1;min-width:3.2rem;text-align:right}
+.orig .o-n small{display:block;color:var(--muted);font-size:.78rem;font-weight:500}
+.vazio{margin:0;text-align:center;font-size:.93rem}
+
 .col.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
 
 /* Responsivo */
@@ -128,6 +144,8 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
   .qgrid{gap:.55rem}
   .qt{padding:.85rem .6rem .9rem}
   .mixl li{white-space:normal}
+  .orig{column-gap:.6rem}
+  .orig .o-n{min-width:2.6rem}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
@@ -222,7 +240,38 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
 </section>
 
 <section class="cols" style="margin-top:1.25rem">
-  <div class="col tres">
+  <div class="col">
+    <h2>Pedidos de Prorrogação</h2>
+
+    <div class="card big prorrog">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <h3>Pedidos de prorrogação em setembro/2026</h3>
+      <div class="num">10</div>
+      <div class="mix" role="img" aria-label="N2 1, N3 3, Cross-Integrações 5, SRE 1"><span style="flex:1;background:var(--green)"></span><span style="flex:3;background:var(--blue)"></span><span style="flex:5;background:var(--purple)"></span><span style="flex:1;background:var(--sky)"></span></div>
+      <ul class="mixl">
+        <li><i style="background:var(--green)"></i>N2 <b>1</b></li>
+        <li><i style="background:var(--blue)"></i>N3 <b>3</b></li>
+        <li><i style="background:var(--purple)"></i>Cross-Integrações <b>5</b></li>
+        <li><i style="background:var(--sky)"></i>SRE <b>1</b></li>
+      </ul>
+      <span class="tag alert">Ponto de atenção</span>
+    </div>
+
+    <div class="card origem">
+      <h3>Pedidos por origem</h3>
+      <ul class="orig">
+        <li style="--c:var(--green)"><span class="o-nome">N2</span><span class="o-barra"><i style="width:10.0%"></i></span><span class="o-n">1<small>10%</small></span></li>
+        <li style="--c:var(--blue)"><span class="o-nome">N3</span><span class="o-barra"><i style="width:30.0%"></i></span><span class="o-n">3<small>30%</small></span></li>
+        <li style="--c:var(--purple)"><span class="o-nome">Cross-Integrações</span><span class="o-barra"><i style="width:50.0%"></i></span><span class="o-n">5<small>50%</small></span></li>
+        <li style="--c:var(--sky)"><span class="o-nome">SRE</span><span class="o-barra"><i style="width:10.0%"></i></span><span class="o-n">1<small>10%</small></span></li>
+        <li style="--c:var(--ice)"><span class="o-nome">DBAs</span><span class="o-barra"><i style="width:0.0%"></i></span><span class="o-n">0<small>0%</small></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col">
     <h2>Destaques</h2>
 
     <div class="card item">
@@ -236,12 +285,6 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
       <span class="k">01:38:26</span>
       <span class="l">Média de primeiro atendimento no Quarter 3</span>
       <span class="tag good">Muito bom</span>
-    </div>
-    <div class="card item">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
-      <span class="k">10</span>
-      <span class="l">Pedidos de prorrogação em setembro/2026</span>
-      <span class="tag alert">Ponto de atenção</span>
     </div>
   </div>
 </section>
@@ -318,7 +361,35 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
 </section>
 
 <section class="cols" style="margin-top:1.25rem">
-  <div class="col tres">
+  <div class="col">
+    <h2>Pedidos de Prorrogação</h2>
+
+    <div class="card big prorrog">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      <h3>Pedidos de prorrogação em outubro/2026</h3>
+      <div class="num">2</div>
+      <div class="mix" role="img" aria-label="N3 2"><span style="flex:2;background:var(--blue)"></span></div>
+      <ul class="mixl">
+        <li><i style="background:var(--blue)"></i>N3 <b>2</b></li>
+      </ul>
+      <span class="tag good">Menos que em setembro (10)</span>
+    </div>
+
+    <div class="card origem">
+      <h3>Pedidos por origem</h3>
+      <ul class="orig">
+        <li style="--c:var(--green)"><span class="o-nome">N2</span><span class="o-barra"><i style="width:0.0%"></i></span><span class="o-n">0<small>0%</small></span></li>
+        <li style="--c:var(--blue)"><span class="o-nome">N3</span><span class="o-barra"><i style="width:100.0%"></i></span><span class="o-n">2<small>100%</small></span></li>
+        <li style="--c:var(--purple)"><span class="o-nome">Cross-Integrações</span><span class="o-barra"><i style="width:0.0%"></i></span><span class="o-n">0<small>0%</small></span></li>
+        <li style="--c:var(--sky)"><span class="o-nome">SRE</span><span class="o-barra"><i style="width:0.0%"></i></span><span class="o-n">0<small>0%</small></span></li>
+        <li style="--c:var(--ice)"><span class="o-nome">DBAs</span><span class="o-barra"><i style="width:0.0%"></i></span><span class="o-n">0<small>0%</small></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cols" style="margin-top:1.25rem">
+  <div class="col">
     <h2>Destaques</h2>
 
     <div class="card item">
@@ -332,12 +403,6 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
       <span class="k">02:10:24</span>
       <span class="l">Média de primeiro atendimento no Quarter 4</span>
       <span class="tag good">Acima do Q3 (01:38:26)</span>
-    </div>
-    <div class="card item">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="4" fill="var(--navy)"/><rect x="6" y="10" width="36" height="9" rx="4" fill="var(--sky)"/><rect x="14" y="5" width="4" height="9" rx="2" fill="#fff"/><rect x="30" y="5" width="4" height="9" rx="2" fill="#fff"/><path d="M24 24v10M19 29h10" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
-      <span class="k">2</span>
-      <span class="l">Pedidos de prorrogação em outubro/2026</span>
-      <span class="tag good">Menos que em setembro (10)</span>
     </div>
   </div>
 </section>
