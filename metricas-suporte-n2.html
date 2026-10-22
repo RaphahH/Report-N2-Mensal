@@ -32,6 +32,7 @@
 :root[data-theme="dark"],:root[data-theme="light"]{color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *,*::before,*::after{box-sizing:inherit}
+html{zoom:1.25}   /* escala da página (ESCALA_PADRAO / --escala no script) */
 body{margin:0;min-height:100%;background:var(--bg);color:var(--soft);font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;overflow-wrap:anywhere}
 img,svg{max-width:100%}
 .wrap{max-width:1040px;margin:0 auto;padding:clamp(1.25rem,4vw,3rem) max(clamp(.85rem,3vw,2rem),env(safe-area-inset-right,0px)) clamp(2rem,5vw,3rem) max(clamp(.85rem,3vw,2rem),env(safe-area-inset-left,0px))}
@@ -125,24 +126,24 @@ h1{color:var(--text);font-weight:800;font-size:clamp(1.75rem,6vw,3.3rem);line-he
 .orig .o-nome::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
 .orig .o-barra{height:12px;background:var(--card-2);border-radius:999px;overflow:hidden}
 .orig .o-barra i{display:block;height:100%;background:var(--c);border-radius:999px}
-.orig .o-n{color:var(--c);font-weight:700;font-size:1.25rem;line-height:1.1;min-width:3.2rem;text-align:right}
+.orig .o-n{color:var(--c);font-weight:700;font-size:1.25rem;line-height:1.1;min-width:3.2rem;text-align:center}
 .orig .o-n small{display:block;color:var(--muted);font-size:.78rem;font-weight:500}
 .vazio{margin:0;text-align:center;font-size:.93rem}
 
 .col.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
 
 /* Responsivo */
-@media (max-width:900px){
+@media (max-width:1125px){
   .col.tres{grid-template-columns:repeat(2,minmax(0,1fr))}
   .col.tres>.card:last-child{grid-column:1/-1}
 }
-@media (max-width:760px){
+@media (max-width:950px){
   .col,.col.tres{grid-template-columns:1fr}
   .col.tres>.card:last-child{grid-column:auto}
   .item .l{max-width:32ch}
   .big{min-height:0}
 }
-@media (max-width:420px){
+@media (max-width:525px){
   .tabs{gap:.4rem}
   .tab{padding:.5rem 1rem;font-size:.9rem}
   .qgrid{gap:.55rem}
